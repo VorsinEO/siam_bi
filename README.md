@@ -97,9 +97,9 @@ If you use this code in your research, please cite:
 
 ```
 @software{timeseries_image_analysis,
-  author = {Your Name},
-  title = {Time Series Image Analysis},
-  year = {2023},
-  url = {https://github.com/yourusername/time-series-image-analysis}
+  author = {Evgeny Vorsin},
+  title = {Borehole Time Series Analysis},
+  year = {2025},
+  url = {https://github.com/VorsinEO/siam_bi}
 }
 ```
