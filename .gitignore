@@ -1,0 +1,70 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Virtual environments
+venv/
+env/
+ENV/
+.env/
+.venv/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IDE specific files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Model checkpoints and results
+results/
+*.pth
+*.pt
+*.h5
+*.onnx
+*.pb
+
+# Logs
+logs/
+*.log
+tensorboard/
+runs/
+
+# Images (keep only if you want to track your image files)
+# *.png
+# *.jpg
+# *.jpeg
+
+# Temporary files
+tmp/
+temp/
+
+# Large files (GitHub has a file size limit)
+# Uncomment if needed, but remember you want to keep parquet and csv
+# *.zip
+# *.tar
+# *.gz
+
+# Specific to this project
+# DO NOT exclude parquet and csv files as they contain important data
+# *.parquet  # Keep parquet files
+# *.csv      # Keep CSV files
+
+# Cache directories
+.cache/
+.pytest_cache/
+
+# Coverage reports
+htmlcov/
+.coverage
+coverage.xml
+*.cover 
