@@ -73,6 +73,19 @@ class TransformerModel(nn.Module):
         """
         super().__init__()
         
+        # Store configuration for from_pretrained
+        self.config = {
+            'input_dim': input_dim,
+            'd_model': d_model,
+            'nhead': nhead,
+            'num_encoder_layers': num_encoder_layers,
+            'dim_feedforward': dim_feedforward,
+            'dropout': dropout,
+            'n_binary_targets': n_binary_targets,
+            'n_regression_targets': n_regression_targets,
+            'max_seq_len': max_seq_len
+        }
+        
         # Input projection
         self.input_projection = nn.Linear(input_dim, d_model)
         
@@ -137,6 +150,42 @@ class TransformerModel(nn.Module):
         regression_output = self.regression_output(pooled_x)
         
         return binary_logits, regression_output 
+
+    @classmethod
+    def from_pretrained(cls, weights_path: str, eval_mode: bool = True, **kwargs):
+        """
+        Create a model and load pretrained weights.
+        
+        Args:
+            weights_path: Path to the saved weights
+            eval_mode: Whether to set the model to evaluation mode
+            **kwargs: Override default model configuration
+            
+        Returns:
+            Model with loaded weights
+        """
+        # Load the state dict
+        state_dict = torch.load(weights_path)
+        
+        # Create new model instance
+        if 'config' in state_dict:
+            # Use saved configuration
+            config = state_dict['config']
+            # Override with any provided kwargs
+            config.update(kwargs)
+            model = cls(**config)
+            # Load only model weights
+            model.load_state_dict(state_dict['model_state_dict'])
+        else:
+            # If no config in state dict, use default/provided args
+            model = cls(**kwargs)
+            # Load weights directly
+            model.load_state_dict(state_dict)
+        
+        if eval_mode:
+            model.eval()
+        
+        return model
 
 class RotaryPositionalEmbedding(nn.Module):
     """
@@ -405,6 +454,19 @@ class TransformerModel_ver2(nn.Module):
         """
         super().__init__()
         
+        # Store configuration for from_pretrained
+        self.config = {
+            'input_dim': input_dim,
+            'd_model': d_model,
+            'nhead': nhead,
+            'num_encoder_layers': num_encoder_layers,
+            'dim_feedforward': dim_feedforward,
+            'dropout': dropout,
+            'n_binary_targets': n_binary_targets,
+            'n_regression_targets': n_regression_targets,
+            'max_seq_len': max_seq_len
+        }
+        
         # Input projection
         self.input_projection = nn.Linear(input_dim, d_model)
         
@@ -468,3 +530,39 @@ class TransformerModel_ver2(nn.Module):
         regression_output = self.regression_output(pooled_x)
         
         return binary_logits, regression_output 
+
+    @classmethod
+    def from_pretrained(cls, weights_path: str, eval_mode: bool = True, **kwargs):
+        """
+        Create a model and load pretrained weights.
+        
+        Args:
+            weights_path: Path to the saved weights
+            eval_mode: Whether to set the model to evaluation mode
+            **kwargs: Override default model configuration
+            
+        Returns:
+            Model with loaded weights
+        """
+        # Load the state dict
+        state_dict = torch.load(weights_path)
+        
+        # Create new model instance
+        if 'config' in state_dict:
+            # Use saved configuration
+            config = state_dict['config']
+            # Override with any provided kwargs
+            config.update(kwargs)
+            model = cls(**config)
+            # Load only model weights
+            model.load_state_dict(state_dict['model_state_dict'])
+        else:
+            # If no config in state dict, use default/provided args
+            model = cls(**kwargs)
+            # Load weights directly
+            model.load_state_dict(state_dict)
+        
+        if eval_mode:
+            model.eval()
+        
+        return model 

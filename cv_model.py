@@ -338,7 +338,8 @@ def create_model(
     dropout: float = 0.1,
     freeze_backbone: bool = False,
     use_multi_layer_features: bool = True,
-    pretrained: bool = True
+    pretrained: bool = True,
+    weights_path: Optional[str] = None
 ) -> TimeSeriesImageModel:
     """
     Factory function to create a model with the specified backbone.
@@ -352,6 +353,7 @@ def create_model(
         freeze_backbone: Whether to freeze the backbone
         use_multi_layer_features: Whether to use features from multiple layers
         pretrained: Whether to use pretrained weights
+        weights_path: Optional path to load model weights from
         
     Returns:
         Initialized model
@@ -367,7 +369,7 @@ def create_model(
         elif model_type == 'swin':
             model_name = "microsoft/swin-tiny-patch4-window7-224"
     
-    return TimeSeriesImageModel(
+    model = TimeSeriesImageModel(
         backbone_type=model_type,
         backbone_model=model_name,
         n_binary_targets=n_binary_targets,
@@ -376,4 +378,11 @@ def create_model(
         freeze_backbone=freeze_backbone,
         use_multi_layer_features=use_multi_layer_features,
         pretrained=pretrained
-    ) 
+    )
+    
+    # Load weights if path is provided
+    if weights_path is not None:
+        model.load_state_dict(torch.load(weights_path))
+        model.eval()  # Set to evaluation mode
+    
+    return model 
