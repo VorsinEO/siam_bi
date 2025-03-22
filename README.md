@@ -30,8 +30,18 @@ This project provides two complementary approaches for analyzing time series dat
 pip install -r requirements.txt
 ```
 
-### Traditional Approach
+### Data Preparation and Analysis
+The project includes several Jupyter notebooks for data analysis and preparation:
 
+- `EDA.ipynb`: Data exploration and preprocessing
+- `plot_them.ipynb`: Feature engineering, including:
+  - Creating smoothed data
+  - Computing derivatives
+  - Generating time series plots for CV approach
+- `train.ipynb`: Training process for the traditional approach
+- `train_cv.ipynb`: Training process for the CV approach
+
+### Traditional Approach
 ```python
 from dataloader import create_data_loader
 from model import TransformerModel
@@ -45,16 +55,18 @@ val_loader = create_data_loader("val.csv", "data.parquet", batch_size=32)
 model = TransformerModel()
 trained_model, history = train_model(model, train_loader, val_loader, num_epochs=20)
 ```
-More info about data and tgs and some data preprocc in EDA notebook.
-In train notebook how to train.
-In plot_them notebook info about feature eng parts like create new smoothing data and new derivatives.
 
 ### CV Approach
-Use notenooks plot_them to prepare images and notebook train_cv for train. Or try these:
 ```bash
 # Train with different backbones
 python cv_example.py --model_type vit --csv_path labels.csv --images_dir images
 python cv_example.py --model_type efficientnet --model_name b3 --csv_path labels.csv --images_dir images
+```
+
+### Inference
+The project includes an inference script for making predictions:
+```bash
+python infer.py --path_to_csv_dir "path/to/your/csv/directory"
 ```
 
 ## Key Features
@@ -63,11 +75,15 @@ python cv_example.py --model_type efficientnet --model_name b3 --csv_path labels
 - **Flexible Architecture**: Choose the best approach based on your data characteristics
 - **Transfer Learning**: CV approach leverages pretrained models for better performance
 - **Customizable**: Extensive options for hyperparameter tuning
+- **Model Loading**: Easy loading of trained models with `from_pretrained` method
+- **Comprehensive Analysis**: Full suite of Jupyter notebooks for data analysis and visualization
 
 ## When to Use Each Approach
 
 - **Traditional Approach**: Better for raw time series with complex temporal dependencies
 - **CV Approach**: Excels at capturing visual patterns and when domain experts analyze plots visually
+- **Combined Approach**: For best results, use both approaches simultaneously to leverage their complementary strengths
+
 
 ## Requirements
 
@@ -83,6 +99,14 @@ python cv_example.py --model_type efficientnet --model_name b3 --csv_path labels
 ├── cv_model.py          # Model architectures with different backbones
 ├── cv_train.py          # Training and evaluation functions
 ├── cv_example.py        # Example script for training and inference
+├── dataloader.py        # Data loading for traditional approach
+├── model.py            # Transformer model implementation
+├── train.py            # Training utilities
+├── infer.py            # Inference script
+├── EDA.ipynb           # Data exploration notebook
+├── plot_them.ipynb     # Feature engineering and plotting
+├── train.ipynb         # Training notebook
+├── train_cv.ipynb      # CV training notebook
 ├── requirements.txt     # Project dependencies
 └── README.md            # This file
 ```
